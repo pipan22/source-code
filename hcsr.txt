@@ -1,10 +1,27 @@
 /*
-  Project : HC-SR04 + Servo
-  Board   : ESP8266 NodeMCU
-  Author  : Pipan
-  Function:
-  - Measure distance using ultrasonic sensor
-  - Move servo to 90° when object detected
+===========================================
+PROJECT : HC-SR04 + Servo
+BOARD   : ESP8266 NodeMCU
+===========================================
+
+KONEKSI PIN:
+
+HC-SR04
+VCC  -> VIN / 5V
+GND  -> GND
+TRIG -> D1 (GPIO5)
+ECHO -> D2 (GPIO4)
+
+Servo
+Merah (VCC)    -> VIN / 5V
+Coklat/Hitam   -> GND
+Kuning/Orange  -> D5 (GPIO14)
+
+CATATAN:
+ECHO HC-SR04 = 5V
+Gunakan voltage divider ke D2
+agar aman untuk ESP8266 (3.3V)
+===========================================
 */
 
 #include <Servo.h>
@@ -23,8 +40,6 @@ void setup() {
 
   myServo.attach(SERVO_PIN);
   myServo.write(0);
-
-  Serial.println("HC-SR04 + Servo System");
 }
 
 void loop() {
@@ -47,7 +62,6 @@ void loop() {
 
   if (distance <= 10) {
     myServo.write(90);
-    Serial.println("Object Detected - Servo Open");
   } else {
     myServo.write(0);
   }
