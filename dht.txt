@@ -1,11 +1,25 @@
 /*
-  Project : MQ2 + DHT22 + Buzzer
-  Board   : ESP8266 NodeMCU
-  Author  : Pipan
-  Function:
-  - Read temperature & humidity using DHT22
-  - Detect gas/smoke using MQ2
-  - Activate buzzer when gas threshold exceeded
+===========================================
+PROJECT : MQ2 + DHT22 + Buzzer
+BOARD   : ESP8266 NodeMCU
+===========================================
+
+KONEKSI PIN:
+
+MQ2 Sensor
+VCC  -> VIN / 5V
+GND  -> GND
+AO   -> A0
+
+DHT22 Sensor
+VCC  -> 3V3
+GND  -> GND
+DATA -> D4 (GPIO2)
+
+Buzzer
+(+)  -> D5 (GPIO14)
+(-)  -> GND
+===========================================
 */
 
 #include <DHT.h>
@@ -26,8 +40,6 @@ void setup() {
   digitalWrite(BUZZER, LOW);
 
   dht.begin();
-
-  Serial.println("MQ2 + DHT22 + Buzzer System");
 }
 
 void loop() {
@@ -35,11 +47,9 @@ void loop() {
   float humidity = dht.readHumidity();
   int gasValue = analogRead(MQ2_PIN);
 
-  Serial.println("===== SENSOR DATA =====");
-
   Serial.print("Temperature: ");
   Serial.print(temperature);
-  Serial.println(" °C");
+  Serial.println(" C");
 
   Serial.print("Humidity: ");
   Serial.print(humidity);
@@ -50,12 +60,9 @@ void loop() {
 
   if (gasValue > gasThreshold) {
     digitalWrite(BUZZER, HIGH);
-    Serial.println("WARNING: Gas Detected!");
   } else {
     digitalWrite(BUZZER, LOW);
   }
-
-  Serial.println("=======================\n");
 
   delay(2000);
 }
